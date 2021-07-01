@@ -1,6 +1,9 @@
 # rust_snn
 
 TO RUN:
+
+Get to command line
+
 cd to rust_snn directory
 
 cargo build
