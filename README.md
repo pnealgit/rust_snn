@@ -1,5 +1,7 @@
 # rust_snn
 
+Developed and tested on MacAir macOS Catalina
+
 TO RUN:
 
 Get to command line
