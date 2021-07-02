@@ -2,6 +2,10 @@
 
 Developed and tested on MacAir macOS Catalina
 
+I assume you have developed at least 1 program in Rust 
+and you are familiar with the cargo toolset.
+
+
 TO RUN:
 
 Get to command line
