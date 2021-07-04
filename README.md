@@ -17,5 +17,10 @@ cargo build
 This will take some time. 
 Nannou has to be loaded and compiled.
 
+Then
+
+cargo run --bin snn
+
+
 
 
