@@ -19,7 +19,7 @@ Nannou has to be loaded and compiled.
 
 Then
 
-cargo run --bin snn
+cargo run 
 
 
 
