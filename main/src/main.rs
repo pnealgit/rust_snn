@@ -35,12 +35,12 @@ use mover::*;
 
 const WIDTH: f32 = 400.0; //width and height of
 const HEIGHT: f32 = 400.0; //screen
-const NUM_NEURONS: usize = 8; //should be powers of 2
+//const NUM_NEURONS: usize = 8; //should be powers of 2
 const NUM_BRAINS: usize = 10; //number of brains  -- in ga talk population
-const NUM_ANGLES: usize = 8; //rover has 8 possible directions it can travel
+//const NUM_ANGLES: usize = 8; //rover has 8 possible directions it can travel
                              //e,ne,n,nw,w,sw,s,se -- kind of like the unit circle in trig
-const ANGLES_DX: [f32; 8] = [1.0, 1.0, 0.0, -1.0, -1.0, -1.0, 0.0, 1.0];
-const ANGLES_DY: [f32; 8] = [0.0, 1.0, 1.0, 1.0, 0.0, -1.0, -1.0, -1.0];
+//const ANGLES_DX: [f32; 8] = [1.0, 1.0, 0.0, -1.0, -1.0, -1.0, 0.0, 1.0];
+//const ANGLES_DY: [f32; 8] = [0.0, 1.0, 1.0, 1.0, 0.0, -1.0, -1.0, -1.0];
 const SENSOR_LENGTH: f32 = 60.0; //length of an antenna
 const MAX_LOOP_KNT: usize = 2000; //can't let them live forever
 
@@ -140,46 +140,10 @@ fn update(app: &App, m: &mut Model, _update: Update) {
         } //end of if-else
 
         m.loop_knt = 0;
+        m.mover.mutate();
 
-        //start mutations here ...
+        m.mover.reset_mover(WIDTH,HEIGHT);
 
-        let mutidx = random_range(0, NUM_NEURONS as usize);
-        if m.mover.brain.xsign[mutidx] == 0 {
-            m.mover.brain.xsign[mutidx] = 1;
-        } else {
-            m.mover.brain.xsign[mutidx] = 0;
-        }
-
-        let mutidx = random_range(0, NUM_NEURONS as usize);
-        let ilink = random_range(0, NUM_NEURONS);
-        if m.mover.brain.nconn[mutidx][ilink] == 0 {
-            m.mover.brain.nconn[mutidx][ilink] = 1;
-        } else {
-            m.mover.brain.nconn[mutidx][ilink] = 0;
-        }
-
-        //might not want to do this.
-        // lets keep all input signals
-        /*
-        let mutidx = random_range(0,NUM_NEURONS as usize);
-        let ilink = random_range(0,NUM_NEURONS);
-        if m.mover.brain.iconn[mutidx][ilink] == 0 {
-            m.mover.brain.iconn[mutidx][ilink] = 1;
-        } else {
-            m.mover.brain.iconn[mutidx][ilink] = 0;
-        }
-        */
-
-        //reset  mover
-        m.mover.brain.fitness = 0.0;
-        m.mover.isdead = 0;
-        let start_x = WIDTH / 2.0 - SENSOR_LENGTH + 10.0;
-        let start_y = (HEIGHT / 2.0) - SENSOR_LENGTH;
-        m.mover.position = pt2(start_x, start_y);
-        m.mover.angle_index = random_range(0, NUM_ANGLES);
-        m.mover.multiplier = 1;
-        m.mover.velocity_x = ANGLES_DX[m.mover.angle_index];
-        m.mover.velocity_y = ANGLES_DY[m.mover.angle_index];
         m.num_epochs += 1;
         println!("NUM EPOCHS: {} ", m.num_epochs);
     } //end of if on dead or frames done

@@ -401,6 +401,51 @@ impl Mover {
             self.sensor_data[isensor][1] = ypos;
         } //end of sensor loop
     } //end of get_sensor_data
+
+    pub fn reset_mover(&mut self, width:f32,height:f32)  {
+        self.brain.fitness = 0.0;
+        self.isdead = 0;
+        let start_x = width / 2.0 - SENSOR_LENGTH + 10.0;
+        let start_y = (height / 2.0) - SENSOR_LENGTH;
+        self.position = pt2(start_x, start_y);
+        self.angle_index = random_range(0, NUM_ANGLES);
+        self.multiplier = 1;
+        self.velocity_x = ANGLES_DX[self.angle_index];
+        self.velocity_y = ANGLES_DY[self.angle_index];
+    }
+    pub fn mutate(&mut self) {
+
+        //start mutations here ...
+
+        let mutidx = random_range(0, NUM_NEURONS as usize);
+        if self.brain.xsign[mutidx] == 0 {
+            self.brain.xsign[mutidx] = 1;
+        } else {
+            self.brain.xsign[mutidx] = 0;
+        }
+
+        let mutidx = random_range(0, NUM_NEURONS as usize);
+        let ilink = random_range(0, NUM_NEURONS);
+        if self.brain.nconn[mutidx][ilink] == 0 {
+            self.brain.nconn[mutidx][ilink] = 1;
+        } else {
+            self.brain.nconn[mutidx][ilink] = 0;
+        }
+
+        //might not want to do this.
+        // lets keep all input signals
+        /*
+        let mutidx = random_range(0,NUM_NEURONS as usize);
+        let ilink = random_range(0,NUM_NEURONS);
+        if self.brain.iconn[mutidx][ilink] == 0 {
+            self.brain.iconn[mutidx][ilink] = 1;
+        } else {
+            self.brain.iconn[mutidx][ilink] = 0;
+        }
+        */
+
+    } //end of mutate
+
 } //end of impl
 
 
