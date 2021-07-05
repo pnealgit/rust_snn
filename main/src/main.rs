@@ -26,22 +26,13 @@
 //does not change direction....
 
 use nannou::prelude::*;
+extern crate constants;
 extern crate brain;
 extern crate mover;
 
 use mover::*;
 
 
-
-const WIDTH: f32 = 400.0; //width and height of
-const HEIGHT: f32 = 400.0; //screen
-//const NUM_NEURONS: usize = 8; //should be powers of 2
-const NUM_BRAINS: usize = 10; //number of brains  -- in ga talk population
-//const NUM_ANGLES: usize = 8; //rover has 8 possible directions it can travel
-                             //e,ne,n,nw,w,sw,s,se -- kind of like the unit circle in trig
-//const ANGLES_DX: [f32; 8] = [1.0, 1.0, 0.0, -1.0, -1.0, -1.0, 0.0, 1.0];
-//const ANGLES_DY: [f32; 8] = [0.0, 1.0, 1.0, 1.0, 0.0, -1.0, -1.0, -1.0];
-const SENSOR_LENGTH: f32 = 60.0; //length of an antenna
 const MAX_LOOP_KNT: usize = 2000; //can't let them live forever
 
 fn main() {
@@ -57,15 +48,15 @@ struct Model {
 }
 
 fn model(app: &App) -> Model {
-    let rect = Rect::from_w_h(WIDTH, HEIGHT);
+    let rect = Rect::from_w_h(constants::WIDTH, constants::HEIGHT);
     app.new_window()
         .size(rect.w() as u32, rect.h() as u32)
         .view(view)
         .build()
         .unwrap();
 
-    let start_x = WIDTH / 2.0 - SENSOR_LENGTH + 10.0;
-    let start_y = (HEIGHT / 2.0) - SENSOR_LENGTH;
+    let start_x = constants::WIDTH / 2.0 - constants::SENSOR_LENGTH + 10.0;
+    let start_y = (constants::HEIGHT / 2.0) - constants::SENSOR_LENGTH;
 
     let mover = Mover::new(start_x, start_y);
     let loop_knt = 0;
@@ -93,7 +84,7 @@ fn update(app: &App, m: &mut Model, _update: Update) {
         //get fitnesses for the population before choosing
         //who to breed/mutate.
         //
-        if m.num_epochs < NUM_BRAINS {
+        if m.num_epochs < constants::NUM_BRAINS {
             //store old results
             m.mover.brains[m.mover.brain_index] = m.mover.brain.clone();
             //get new brain
@@ -108,7 +99,7 @@ fn update(app: &App, m: &mut Model, _update: Update) {
                 .sort_by(|d2, d1| d1.fitness.partial_cmp(&d2.fitness).unwrap());
 
             let mut sum_fit = 0.0;
-            for ix in 0..NUM_BRAINS {
+            for ix in 0..constants::NUM_BRAINS {
                 println!("IX: {} FITNESS: {} ", ix, m.mover.brains[ix].fitness as u32);
                 sum_fit += m.mover.brains[ix].fitness;
             }
@@ -123,7 +114,7 @@ fn update(app: &App, m: &mut Model, _update: Update) {
             let goal = random_range(0.0, 1.0);
 
             let mut goal_index = 0;
-            for ix in 0..NUM_BRAINS {
+            for ix in 0..constants::NUM_BRAINS {
                 this_fit += m.mover.brains[ix].fitness / sum_fit;
                 if this_fit > goal {
                     goal_index = ix;
@@ -132,8 +123,8 @@ fn update(app: &App, m: &mut Model, _update: Update) {
             }
             //before replacing brain , see if it should be stored in the
             //population.
-            if m.mover.brain.fitness >= m.mover.brains[NUM_BRAINS - 1].fitness {
-                m.mover.brains[NUM_BRAINS - 1] = m.mover.brain.clone();
+            if m.mover.brain.fitness >= m.mover.brains[constants::NUM_BRAINS - 1].fitness {
+                m.mover.brains[constants::NUM_BRAINS - 1] = m.mover.brain.clone();
             }
             m.mover.brain_index = goal_index;
             m.mover.brain = m.mover.brains[m.mover.brain_index].clone();
@@ -142,7 +133,7 @@ fn update(app: &App, m: &mut Model, _update: Update) {
         m.loop_knt = 0;
         m.mover.mutate();
 
-        m.mover.reset_mover(WIDTH,HEIGHT);
+        m.mover.reset_mover(constants::WIDTH,constants::HEIGHT);
 
         m.num_epochs += 1;
         println!("NUM EPOCHS: {} ", m.num_epochs);

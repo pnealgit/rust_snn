@@ -1,4 +1,4 @@
 [workspace]
-members = ["main","brain","mover"]
+members = ["main","brain","mover","constants"]
 
 
