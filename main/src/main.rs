@@ -29,9 +29,7 @@ use nannou::prelude::*;
 extern crate constants;
 extern crate brain;
 extern crate mover;
-
 use mover::*;
-
 
 const MAX_LOOP_KNT: usize = 2000; //can't let them live forever
 
@@ -150,3 +148,5 @@ fn view(app: &App, m: &Model, frame: Frame) {
     // Write the result of our drawing to the window's frame.
     draw.to_frame(app, &frame).unwrap();
 }
+
+

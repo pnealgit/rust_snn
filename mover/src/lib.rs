@@ -37,6 +37,7 @@ impl Mover {
             brains.push(brain::Brain::new());
         }
         let brain = brain::Brain::new();
+
         //Floreano -- 8 bit brain
 
         Mover {
